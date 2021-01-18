@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Filters from './components/Filters/Filters';
+import MovieList from "./components/Movies/MoviesList";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export default class App extends React.Component{
+    constructor() {
+        super();
+
+        this.state = {
+            filters: {
+                sort_by: "popularity.desc"
+            }
+        }
+    }
+
+    onChange = (event) => {
+        // console.log(event.target.name, event.target.value)
+        const newFilters = {
+            ...this.state.filters,
+            [event.target.name]: event.target.value
+        }
+        this.setState({
+            filters: newFilters
+        })
+    }
+
+
+    render() {
+        const {filters} = this.state
+
+        return (
+            <div className="container">
+                <div className="row mt-4">
+                    <div className="col-4">
+                        <div className="card" style={{width: "100%"}}>
+                            <div className="card-body">
+                                <h3>Фильтры</h3>
+                                <Filters filters={filters} onChange={this.onChange}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-8">
+                        <MovieList filters={filters}/>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
-
-export default App;
